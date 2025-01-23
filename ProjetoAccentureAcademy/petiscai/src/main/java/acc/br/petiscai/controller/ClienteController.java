@@ -19,31 +19,40 @@ public class ClienteController {
 
     @PostMapping("/save")
     public ResponseEntity<String> save(@RequestBody ClienteDto clienteDto) {
-        if (clienteService.checaIdade(clienteDto)) {
-            String c = this.clienteService.save(clienteDto);
+        String c = this.clienteService.save(clienteDto);
+
+        if (c.contains("Cliente salvo com sucesso!")) {
             return new ResponseEntity<>(c, HttpStatus.CREATED);
+        } else if (c.contains("Cliente menor de idade!")) {
+            return new ResponseEntity<>(c, HttpStatus.NOT_ACCEPTABLE);
         } else {
-            return new ResponseEntity<>("Cliente menor de idade", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(c, HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping("/update/{id}")
     public ResponseEntity<String> update(@RequestBody ClienteDto clienteDto, @PathVariable Integer id) {
-        if(clienteService.findByIdBool(id)) {
-            String c = this.clienteService.update(clienteDto, id);
+        String c = this.clienteService.update(clienteDto, id);
+
+        if (c.contains("Cliente" + id + " alterado com sucesso!")) {
             return new ResponseEntity<>(c, HttpStatus.CREATED);
-        }else{
-            return new ResponseEntity<>("Cliente não encontrado", HttpStatus.NOT_FOUND);
+        } else if (c.contains("Cliente não encontrado")) {
+            return new ResponseEntity<>(c, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(c, HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable long id) {
-        if (clienteService.findByIdBool(id)) {
-            String c = this.clienteService.deleteById(id);
+        String c = this.clienteService.deleteById(id);
+
+        if (c.contains("Cliente deletado com sucesso!")) {
             return new ResponseEntity<>(c, HttpStatus.CREATED);
+        } else if (c.contains("Cliente não encontrado")) {
+            return new ResponseEntity<>(c, HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>("Cliente não encontrado", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(c, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -51,21 +60,23 @@ public class ClienteController {
     public ResponseEntity<List<Cliente>> findAll() {
         List<Cliente> lista = this.clienteService.findAll();
 
-        if(lista.isEmpty()) {
+        if (lista.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }else {
+        } else {
             return new ResponseEntity<>(lista, HttpStatus.OK);
         }
     }
 
     @GetMapping("/findById/{id}")
     public ResponseEntity<Cliente> findById(@PathVariable long id) {
-        if (clienteService.findByIdBool(id)) {
-            Cliente c = this.clienteService.findById(id);
-            return new ResponseEntity<>(c, HttpStatus.OK);
+        Cliente c = this.clienteService.findById(id);
+
+        if (c == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(c, HttpStatus.OK);
         }
+
     }
 
 }
