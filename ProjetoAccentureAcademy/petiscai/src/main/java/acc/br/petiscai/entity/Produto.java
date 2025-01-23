@@ -9,12 +9,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Data //Getter, Setter, EqualsAndHashCode e ToString
+@AllArgsConstructor
 public class Produto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
+    private String nome;
+    private String descricao;
+    private Double preco;
+    private Integer estoque;
+    private Integer disponivel;
+
+
+
 }
