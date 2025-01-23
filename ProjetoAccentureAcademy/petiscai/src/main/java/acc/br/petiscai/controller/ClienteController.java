@@ -19,24 +19,53 @@ public class ClienteController {
 
     @PostMapping("/save")
     public ResponseEntity<String> save(@RequestBody ClienteDto clienteDto) {
-        if(clienteService.checaIdade(clienteDto)) {
+        if (clienteService.checaIdade(clienteDto)) {
             String c = this.clienteService.save(clienteDto);
             return new ResponseEntity<>(c, HttpStatus.CREATED);
-        }else{
+        } else {
             return new ResponseEntity<>("Cliente menor de idade", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/update/{id}")
+    public ResponseEntity<String> update(@RequestBody ClienteDto clienteDto, @PathVariable Integer id) {
+        if(clienteService.findByIdBool(id)) {
+            String c = this.clienteService.update(clienteDto, id);
+            return new ResponseEntity<>(c, HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<>("Cliente não encontrado", HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable long id) {
-
-        String c = this.clienteService.deleteById(id);
-        return new ResponseEntity<>(c, HttpStatus.CREATED);
+        if (clienteService.findByIdBool(id)) {
+            String c = this.clienteService.deleteById(id);
+            return new ResponseEntity<>(c, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>("Cliente não encontrado", HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/findAll")
     public ResponseEntity<List<Cliente>> findAll() {
         List<Cliente> lista = this.clienteService.findAll();
-        return new ResponseEntity<>(lista, HttpStatus.OK);
+
+        if(lista.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }else {
+            return new ResponseEntity<>(lista, HttpStatus.OK);
+        }
     }
+
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<Cliente> findById(@PathVariable long id) {
+        if (clienteService.findByIdBool(id)) {
+            Cliente c = this.clienteService.findById(id);
+            return new ResponseEntity<>(c, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
