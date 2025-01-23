@@ -63,7 +63,7 @@ public class ClienteService {
         if (findByIdBool(id)) {
             try {
                 return this.clienteRepository.findById(id).get();
-            }catch(Exception e) {
+            } catch (Exception e) {
                 return null;
             }
         } else {
@@ -76,11 +76,13 @@ public class ClienteService {
     }
 
     public String update(ClienteDto clienteDto, long id) {
-        if (findByIdBool(id)) {
+        if (findByIdBool(id) && checaIdade(clienteDto)) {
             try {
                 Cliente cliente = new Cliente(id, clienteDto.getCpf(), clienteDto.getNome(), clienteDto.getEmail(),
                         clienteDto.getTelefone(), clienteDto.getEndereco(), clienteDto.getIdade());
+
                 this.clienteRepository.save(cliente);
+
                 return "Cliente " + cliente.getId() + " alterado com sucesso!";
             } catch (Exception e) {
                 return e.getMessage();
