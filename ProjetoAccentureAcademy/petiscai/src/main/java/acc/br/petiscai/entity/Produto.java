@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class Produto {
 
@@ -22,6 +21,7 @@ public class Produto {
     private Double preco;
     private Integer estoque;
     private Integer disponivel;
+    
 
 
 
