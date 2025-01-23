@@ -15,11 +15,4 @@ public class Estoque {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
-    @OneToOne(cascade = {CascadeType.PERSIST}) //Ao criar uma referencia no estoque, se nao existir um produto desse o
-    // software cria-o e salva na tabela de produtos
-    private Produto produto;
-
-    @Column(nullable = false)
-    private int quantidade;
 }
