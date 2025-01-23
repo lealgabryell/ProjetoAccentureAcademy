@@ -76,12 +76,16 @@ public class ClienteService {
     }
 
     public String update(ClienteDto clienteDto, long id) {
-        if (findByIdBool(id) && checaIdade(clienteDto)) {
+        if (findByIdBool(id)) {
             try {
                 Cliente cliente = new Cliente(id, clienteDto.getCpf(), clienteDto.getNome(), clienteDto.getEmail(),
                         clienteDto.getTelefone(), clienteDto.getEndereco(), clienteDto.getIdade());
 
-                this.clienteRepository.save(cliente);
+                if (checaIdade(clienteDto)) {
+                    this.clienteRepository.save(cliente);
+                } else {
+                    return "Cliente menor de idade!";
+                }
 
                 return "Cliente " + cliente.getId() + " alterado com sucesso!";
             } catch (Exception e) {

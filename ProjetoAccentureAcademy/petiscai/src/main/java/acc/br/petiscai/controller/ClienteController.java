@@ -38,7 +38,9 @@ public class ClienteController {
             return new ResponseEntity<>(c, HttpStatus.CREATED);
         } else if (c.contains("Cliente não encontrado")) {
             return new ResponseEntity<>(c, HttpStatus.NOT_FOUND);
-        } else {
+        }else if(c.contains("Cliente menor de idade!")){
+            return new ResponseEntity<>(c, HttpStatus.NOT_ACCEPTABLE);
+        }else {
             return new ResponseEntity<>(c, HttpStatus.BAD_REQUEST);
         }
     }
