@@ -1,48 +1,77 @@
 package acc.br.petiscai.controller;
 
+import acc.br.petiscai.dto.ProdutoDto;
 import acc.br.petiscai.entity.Produto;
 import acc.br.petiscai.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/produtos")
+@RequestMapping("/api/produto")
 public class ProdutoController {
 
     @Autowired
     private ProdutoService produtoService;
 
-    @PostMapping
-    public ResponseEntity<Produto> createProduto(@RequestBody Produto produto) {
-        Produto novoProduto = produtoService.createProduto(produto);
-        return ResponseEntity.ok(novoProduto);
+    @PostMapping("/save")
+    public ResponseEntity<String> save(@RequestBody ProdutoDto produtoDto) {
+        String c = produtoService.save(produtoDto);
+        if(c.contains("Produto salvo com sucesso!")){
+            return new ResponseEntity<>(c, HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<>(c, HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @GetMapping
-    public ResponseEntity<List<Produto>> getAllProdutos() {
-        List<Produto> produtos = produtoService.getAllProdutos();
-        return ResponseEntity.ok(produtos);
+    @GetMapping("/findAll")
+    public ResponseEntity<List<Produto>> findAll() {
+        List<Produto> produtos = produtoService.findAll();
+
+        if(produtos.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }else {
+            return new ResponseEntity<>(produtos, HttpStatus.OK);
+        }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Produto> getProdutoById(@PathVariable Integer id) {
-        return produtoService.getProdutoById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<Produto> findById(@PathVariable Long id) {
+        Produto produto = this.produtoService.findById(id);
+
+        if(produto == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(produto, HttpStatus.OK);
+        }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Produto> updateProduto(@PathVariable Integer id, @RequestBody Produto produto) {
-        Produto produtoAtualizado = produtoService.updateProduto(id, produto);
-        return ResponseEntity.ok(produtoAtualizado);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> update(@PathVariable Long id, @RequestBody ProdutoDto produtoDto) {
+        String c = produtoService.update(id, produtoDto);
+
+        if(c.contains("Produto atualizado com sucesso!")){
+            return new ResponseEntity<>(c, HttpStatus.CREATED);
+        }else if (c.contains("Id não existente")){
+            return new ResponseEntity<>(c, HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity<>(c, HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduto(@PathVariable Integer id) {
-        produtoService.deleteProduto(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        String c = this.produtoService.delete(id);
+
+        if(c.contains("Produto deletado com sucesso!")){
+            return new ResponseEntity<>(c, HttpStatus.CREATED);
+        }else if(c.contains("Id não existente!")){
+            return new ResponseEntity<>(c, HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity<>(c, HttpStatus.BAD_REQUEST);
+        }
     }
 }

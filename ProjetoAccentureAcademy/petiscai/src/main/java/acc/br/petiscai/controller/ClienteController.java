@@ -30,7 +30,7 @@ public class ClienteController {
         }
     }
 
-    @PostMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<String> update(@RequestBody ClienteDto clienteDto, @PathVariable Integer id) {
         String c = this.clienteService.update(clienteDto, id);
 
