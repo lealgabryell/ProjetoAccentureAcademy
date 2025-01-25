@@ -1,14 +1,11 @@
 package acc.br.petiscai.controller;
 
-import acc.br.petiscai.dto.ProdutoDto;
-import acc.br.petiscai.entity.Estoque;
 import acc.br.petiscai.entity.Produto;
 import acc.br.petiscai.service.EstoqueService;
 import acc.br.petiscai.service.ProdutoService;
-import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity; 
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,51 +14,67 @@ import java.util.List;
 @RequestMapping("/api/estoque")
 public class EstoqueController {
 
-    String c = "";
     @Autowired
-    ProdutoService produtoService;
+    private ProdutoService produtoService;
+
     @Autowired
-    EstoqueService estoqueService;
+    private EstoqueService estoqueService;
 
-
-    @PutMapping("/saida/{id}")
-    public ResponseEntity<String> saida(@PathVariable List<Long> id) {
-
-        for (Long i : id) {
-            Produto produto = this.produtoService.findById(i);
-            c = this.estoqueService.saida(produto);
+    /**
+     * Atualiza estoque de saída para uma lista de IDs de produtos.
+     * Exemplo de chamada: PUT /api/estoque/saida
+     * Corpo (JSON): [1, 2, 3]
+     */
+    @PutMapping("/saida")
+    public ResponseEntity<String> saida(@RequestBody List<Long> ids) {
+        String resposta = "";
+        for (Long id : ids) {
+            Produto produto = produtoService.findById(id);
+            if (produto == null) {
+                resposta = "Produto com ID " + id + " não encontrado!";
+                return new ResponseEntity<>(resposta, HttpStatus.NOT_FOUND);
+            }
+            resposta = estoqueService.saida(produto);
+            // Se quiser tratar cada produto individualmente, pode acumular as respostas.
         }
-
-        if(c.contains("Estoque atualizado devido a venda realizada.") || c.contains("Devido ao estoque zerado, o produto saiu do nosso banco de dados!")) {
-            return new ResponseEntity<>(c, HttpStatus.CREATED);
-        }else {
-            return new ResponseEntity<>(c, HttpStatus.BAD_REQUEST);
+        // Verifica a última mensagem retornada pelo service
+        if (resposta.contains("Estoque atualizado devido a venda realizada.") 
+         || resposta.contains("Devido ao estoque zerado, o produto saiu do nosso banco de dados!")) {
+            return new ResponseEntity<>(resposta, HttpStatus.CREATED);
         }
+        return new ResponseEntity<>(resposta, HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping("/entrada/{id}")
-    public ResponseEntity<String> entrada(@PathVariable List<Long> id) {
-
-        for (Long i : id) {
-            Produto produto = this.produtoService.findById(i);
-            c = this.estoqueService.entrada(produto);
+    /**
+     * Atualiza estoque de entrada para uma lista de IDs de produtos.
+     * Exemplo de chamada: PUT /api/estoque/entrada
+     * Corpo (JSON): [1, 2, 3]
+     */
+    @PutMapping("/entrada")
+    public ResponseEntity<String> entrada(@RequestBody List<Long> ids) {
+        String resposta = "";
+        for (Long id : ids) {
+            Produto produto = produtoService.findById(id);
+            if (produto == null) {
+                resposta = "Produto com ID " + id + " não encontrado!";
+                return new ResponseEntity<>(resposta, HttpStatus.NOT_FOUND);
+            }
+            resposta = estoqueService.entrada(produto);
         }
-
-        if(c.contains("Estoque de" + id.size() + " atualizado devido a compra realizada.")) {
-            return new ResponseEntity<>(c, HttpStatus.CREATED);
-        }else {
-            return new ResponseEntity<>(c, HttpStatus.BAD_REQUEST);
+        if (resposta.contains("Estoque atualizado devido a compra realizada.")) {
+            return new ResponseEntity<>(resposta, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(resposta, HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/findAll")
     public ResponseEntity<List<Produto>> findAll() {
-        List<Produto> lista = this.estoqueService.findAll();
-        if(lista.isEmpty()) {
+        List<Produto> lista = estoqueService.findAll();
+        if (lista == null || lista.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }else {
+        } else {
             return new ResponseEntity<>(lista, HttpStatus.OK);
         }
     }
-
 }

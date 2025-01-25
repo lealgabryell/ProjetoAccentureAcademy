@@ -18,7 +18,7 @@ import java.util.Random;
 @RestController
 public class UserController {
 
-    static String QUEUE_NAME = "user-registration-Equipe8";
+    static String QUEUE_NAME = "user-registration-Equipe9";
     private final RabbitTemplate rabbitTemplate;
 
 
