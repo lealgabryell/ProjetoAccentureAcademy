@@ -12,4 +12,8 @@ import java.util.List;
 public interface ClienteRepository  extends JpaRepository<Cliente, Long> {
 
     public Cliente findByCpf(String cpf);
+    // Verificar se existe um cliente com o cpf informado
+    public boolean existsByCpf(String cpf);
+    // Verificar se existe um cliente com o email informado
+    public boolean existsByEmail(String email);
 }
