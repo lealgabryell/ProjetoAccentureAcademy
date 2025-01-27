@@ -2,6 +2,7 @@ package acc.br.petiscai.service;
 
 import acc.br.petiscai.dto.PedidoDto;
 import acc.br.petiscai.dto.ItemPedidoDto;
+import acc.br.petiscai.dto.PedidoResumoDto;
 import acc.br.petiscai.entity.Cliente;
 import acc.br.petiscai.entity.ItemPedido;
 import acc.br.petiscai.entity.Pedido;
@@ -41,6 +42,7 @@ public class PedidoService {
         if (optCliente.isEmpty()) {
             return "Cliente não encontrado.";
         }
+
         Cliente cliente = optCliente.get();
 
         // 2) Criar objeto Pedido
@@ -57,10 +59,6 @@ public class PedidoService {
             }
             Produto produto = optProduto.get();
 
-            // Verificar se é bebida alcoólica e cliente é menor de idade
-            if (ehBebidaAlcoolica(produto) && cliente.getIdade() < 18) {
-                return "Cliente menor de idade não pode comprar bebidas alcoólicas.";
-            }
 
             // Verificar estoque
             if (produto.getQuantidade() < item.getQuantidade()) {
@@ -96,16 +94,69 @@ public class PedidoService {
         return "Pedido criado com sucesso! ID: " + pedido.getId() + " | Total: " + total;
     }
 
-    public Pedido buscarPorId(Long id) {
-        return pedidoRepository.findById(id).orElse(null);
+    public PedidoResumoDto findById(Long id) {
+        try {
+            Pedido pedido = pedidoRepository.findById(id).get();
+            Long idPedido = pedido.getId();
+            String nomeCliente = pedido.getCliente().getNome();
+            BigDecimal subtotal = calcularSubtotalPorPedido(idPedido);
+            return new PedidoResumoDto(idPedido, nomeCliente, subtotal);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    public List<Pedido> buscarTodos() {
-        return pedidoRepository.findAll();
+
+    public List<PedidoResumoDto> buscarResumoPedidos() { //organizado por: cliente que fez o primeiro pedido pela primeira vez
+
+        List<PedidoResumoDto> pedidosResumo = new ArrayList<>();
+
+        try {
+            List<String> listaClientes = pedidoRepository.findClienteNome(); //encontra o nome dos clientes que tem pedido registrado
+            for (String nomeCliente : listaClientes) {
+                List<Long> listaIdPedido = pedidoRepository.findClienteIdByNome(nomeCliente); //encontra o id do cliente
+                for (Long idPedido : listaIdPedido) {
+                    BigDecimal subtotal = calcularSubtotalPorPedido(idPedido); //calcula o subtotal a partir do nome encontrado
+                    pedidosResumo.add(new PedidoResumoDto(idPedido, nomeCliente, subtotal));
+                }
+            }
+            return pedidosResumo;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    private boolean ehBebidaAlcoolica(Produto produto) {
-        return produto.getTipo() != null && produto.getTipo().toLowerCase().contains("alco");
+    private BigDecimal calcularSubtotalPorPedido(Long pedidoId) {
+
+        Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedidoId); // Buscar o pedido pelo ID
+
+
+        if (pedidoOptional.isEmpty()) { // Se o pedido não for encontrado, retorna zero
+            return BigDecimal.ZERO;
+        }
+
+        Pedido pedido = pedidoOptional.get();
+
+        BigDecimal subtotal = BigDecimal.ZERO;
+
+        for (ItemPedido item : pedido.getItens()) {
+
+            BigDecimal precoUnitario = BigDecimal.valueOf(item.getProduto().getPreco());// Convertendo o preço de Double para BigDecimal
+
+            BigDecimal quantidade = new BigDecimal(item.getQuantidade());// Convertendo a quantidade de Integer para BigDecimal
+
+            BigDecimal itemSubtotal = precoUnitario.multiply(quantidade);
+
+            subtotal = subtotal.add(itemSubtotal);
+        }
+
+        return subtotal;
     }
+
+    private List<Pedido> buscarPedidosPorCliente(String nomeCliente) {
+        return pedidoRepository.findByClienteNome(nomeCliente);
+    }
+
+
 }
 

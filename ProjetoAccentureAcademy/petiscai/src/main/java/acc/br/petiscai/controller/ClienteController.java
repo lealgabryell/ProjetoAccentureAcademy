@@ -3,6 +3,7 @@ package acc.br.petiscai.controller;
 import acc.br.petiscai.dto.ClienteDto;
 import acc.br.petiscai.entity.Cliente;
 import acc.br.petiscai.service.ClienteService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ public class ClienteController {
     @Autowired
     ClienteService clienteService;
 
+    @Operation(summary = "Cria um novo cliente")
     @PostMapping("/save")
     public ResponseEntity<String> save(@RequestBody ClienteDto clienteDto) {
         String c = this.clienteService.save(clienteDto);
@@ -34,6 +36,7 @@ public class ClienteController {
         }
     }
 
+    @Operation(summary = "Altera informacoes de um cliente")
     @PutMapping("/update/{id}")
     public ResponseEntity<String> update(@RequestBody ClienteDto clienteDto, @PathVariable Integer id) {
         String c = this.clienteService.update(clienteDto, id);
@@ -49,6 +52,7 @@ public class ClienteController {
         }
     }
 
+    @Operation(summary = "Exclui um cliente")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable long id) {
         String c = this.clienteService.deleteById(id);
@@ -62,6 +66,7 @@ public class ClienteController {
         }
     }
 
+    @Operation(summary = "Encontra todos os clientes salvos")
     @GetMapping("/findAll")
     public ResponseEntity<List<Cliente>> findAll() {
         List<Cliente> lista = this.clienteService.findAll();
@@ -73,6 +78,7 @@ public class ClienteController {
         }
     }
 
+    @Operation(summary = "Encontra um cliente pelo seu Id")
     @GetMapping("/findById/{id}")
     public ResponseEntity<Cliente> findById(@PathVariable long id) {
         Cliente c = this.clienteService.findById(id);

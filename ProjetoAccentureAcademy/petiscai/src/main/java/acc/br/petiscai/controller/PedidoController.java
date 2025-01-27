@@ -1,10 +1,12 @@
 package acc.br.petiscai.controller;
 
 import acc.br.petiscai.dto.PedidoDto;
+import acc.br.petiscai.dto.PedidoResumoDto;
 import acc.br.petiscai.entity.Pedido;
 import acc.br.petiscai.service.PedidoService;
 import io.swagger.v3.oas.annotations.Operation; // Caso esteja usando SpringDoc para Swagger
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,29 +23,29 @@ public class PedidoController {
     @PostMapping("/create")
     public ResponseEntity<String> criarPedido(@RequestBody PedidoDto pedidoDto) {
         String resultado = pedidoService.criarPedido(pedidoDto);
-        if(resultado.startsWith("Pedido criado com sucesso")) {
-            return ResponseEntity.ok(resultado);
+        if (resultado.contains("Pedido criado com sucesso")) {
+            return new ResponseEntity<>(resultado, HttpStatus.CREATED);
         } else {
-            // Aqui você poderia lidar com diferentes códigos de status
-            return ResponseEntity.badRequest().body(resultado);
+            return new ResponseEntity<>(resultado, HttpStatus.BAD_REQUEST);
         }
     }
 
     @Operation(summary = "Busca um pedido pelo ID")
-    @GetMapping("/{id}")
-    public ResponseEntity<Pedido> buscarPorId(@PathVariable Long id) {
-        Pedido pedido = pedidoService.buscarPorId(id);
-        if(pedido == null) {
-            return ResponseEntity.notFound().build();
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<PedidoResumoDto> findById(@PathVariable Long id) {
+        PedidoResumoDto pedido = pedidoService.findById(id);
+        if (pedido == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(pedido, HttpStatus.OK);
         }
-        return ResponseEntity.ok(pedido);
     }
 
     @Operation(summary = "Lista todos os pedidos")
     @GetMapping("/findAll")
-    public ResponseEntity<List<Pedido>> buscarTodos() {
-        List<Pedido> lista = pedidoService.buscarTodos();
-        if(lista.isEmpty()) {
+    public ResponseEntity<List<PedidoResumoDto>> buscarTodos() {
+        List<PedidoResumoDto> lista = pedidoService.buscarResumoPedidos();
+        if (lista.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(lista);

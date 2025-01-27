@@ -3,6 +3,7 @@ package acc.br.petiscai.controller;
 import acc.br.petiscai.dto.ProdutoDto;
 import acc.br.petiscai.entity.Produto;
 import acc.br.petiscai.service.ProdutoService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity; 
@@ -17,6 +18,7 @@ public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
 
+    @Operation(summary = "Cria um novo produto")
     @PostMapping("/save")
     public ResponseEntity<String> save(@RequestBody ProdutoDto produtoDto) {
         String c = produtoService.save(produtoDto);
@@ -27,6 +29,7 @@ public class ProdutoController {
         }
     }
 
+    @Operation(summary = "Encontra todos os produtos")
     @GetMapping("/findAll")
     public ResponseEntity<List<Produto>> findAll() {
         List<Produto> produtos = produtoService.findAll();
@@ -37,6 +40,7 @@ public class ProdutoController {
         }
     }
 
+    @Operation(summary = "Encontra um produto pelo seu Id")
     @GetMapping("/findById/{id}")
     public ResponseEntity<Produto> findById(@PathVariable Long id) {
         Produto produto = produtoService.findById(id);
@@ -47,6 +51,7 @@ public class ProdutoController {
         }
     }
 
+    @Operation(summary = "Altera informacoes de produto passando seu id")
     @PutMapping("/update/{id}")
     public ResponseEntity<String> update(@PathVariable Long id, @RequestBody ProdutoDto produtoDto) {
         String c = produtoService.update(id, produtoDto);
@@ -59,6 +64,7 @@ public class ProdutoController {
         }
     }
 
+    @Operation(summary = "Delet um produto passando seu Id")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         String c = produtoService.delete(id);
