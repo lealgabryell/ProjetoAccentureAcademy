@@ -17,19 +17,47 @@ public class ClienteService {
     ClienteRepository clienteRepository;
 
     public String save(ClienteDto clienteDto) {
-        if (checaIdade(clienteDto)) {
-            try {
-                Cliente cliente = new Cliente(clienteDto.getCpf(), clienteDto.getNome(), clienteDto.getEmail(),
-                        clienteDto.getTelefone(), clienteDto.getEndereco(), clienteDto.getIdade());
-                this.clienteRepository.save(cliente);
-                return "Cliente salvo com sucesso!";
-            } catch (Exception e) {
-                return e.getMessage();
-            }
-        } else {
-            return ("Cliente menor de idade!");
+        if (!checaIdade(clienteDto)) {
+            return "Cliente menor de idade!";
+        }
+        
+        if (clienteRepository.existsByEmail(clienteDto.getEmail())) {
+            return "Email já cadastrado no sistema!";
+        }
+
+        if (clienteRepository.existsByCpf(clienteDto.getCpf())) {
+            return "CPF já cadastrado no sistema!";
+        }
+
+        try {
+            Cliente cliente = new Cliente(
+                    clienteDto.getCpf(),
+                    clienteDto.getNome(),
+                    clienteDto.getEmail(),
+                    clienteDto.getTelefone(),
+                    clienteDto.getEndereco(),
+                    clienteDto.getIdade());
+            this.clienteRepository.save(cliente);
+            return "Cliente salvo com sucesso!";
+        } catch (Exception e) {
+            return e.getMessage();
         }
     }
+
+    // public String save(ClienteDto clienteDto) {
+    //     if (checaIdade(clienteDto)) {
+    //         try {
+    //             Cliente cliente = new Cliente(clienteDto.getCpf(), clienteDto.getNome(), clienteDto.getEmail(),
+    //                     clienteDto.getTelefone(), clienteDto.getEndereco(), clienteDto.getIdade());
+    //             this.clienteRepository.save(cliente);
+    //             return "Cliente salvo com sucesso!";
+    //         } catch (Exception e) {
+    //             return e.getMessage();
+    //         }
+    //     } else {
+    //         return ("Cliente menor de idade!");
+    //     }
+    // }
 
     public String deleteById(long id) {
         if (findByIdBool(id)) {

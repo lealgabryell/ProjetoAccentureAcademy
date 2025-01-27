@@ -25,6 +25,10 @@ public class ClienteController {
             return new ResponseEntity<>(c, HttpStatus.CREATED);
         } else if (c.contains("Cliente menor de idade!")) {
             return new ResponseEntity<>(c, HttpStatus.NOT_ACCEPTABLE);
+        } else if (c.contains("CPF já cadastrado no sistema!")) {
+            return new ResponseEntity<>(c, HttpStatus.CONFLICT);
+        } else if (c.contains("Email já cadastrado")) {
+            return new ResponseEntity<>(c, HttpStatus.CONFLICT);
         } else {
             return new ResponseEntity<>(c, HttpStatus.BAD_REQUEST);
         }
@@ -38,9 +42,9 @@ public class ClienteController {
             return new ResponseEntity<>(c, HttpStatus.CREATED);
         } else if (c.contains("Cliente não encontrado")) {
             return new ResponseEntity<>(c, HttpStatus.NOT_FOUND);
-        }else if(c.contains("Cliente menor de idade!")){
+        } else if (c.contains("Cliente menor de idade!")) {
             return new ResponseEntity<>(c, HttpStatus.NOT_ACCEPTABLE);
-        }else {
+        } else {
             return new ResponseEntity<>(c, HttpStatus.BAD_REQUEST);
         }
     }
