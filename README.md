@@ -102,6 +102,8 @@ Petiscai
 │       └── application.properties
 ├── pom.xml
 
+---
+
 ### Principais Diretórios e Arquivos
 
 - **`src/main/java/acc.br.petiscai/`**
