@@ -1,40 +1,50 @@
 # API Petiscaí
 
-## 1. Introdução
+## 📖 Introdução
 
-### Título do Projeto/API
+### 🎯 Título do Projeto/API
 **API Petiscaí**
 
-### Descrição Geral
-A API Petiscaí é uma solução projetada para gerenciar o cadastro de bebidas alcoólicas e petiscos, abrangendo desde o registro de produtos até o gerenciamento de pedidos de clientes. Os dados são armazenados em um banco de dados MySQL, estruturado com tabelas para clientes, produtos, pedidos e status de pagamento.
+### 📋 Descrição Geral
+A **API Petiscaí** é uma solução projetada para gerenciar o cadastro de bebidas alcoólicas e petiscos, abrangendo desde o registro de produtos até o gerenciamento de pedidos de clientes. 
 
-Desenvolvida em **Java**, utilizando o framework **Spring Boot**, a API integra tecnologias como:
+Os dados são armazenados em um banco de dados **MySQL**, estruturado com tabelas para:
+- **Clientes**
+- **Produtos**
+- **Pedidos**
+- **Status de pagamento**
+
+#### 🚀 Tecnologias Utilizadas
+- **Java** com o framework **Spring Boot**
 - **Swagger** para documentação
 - **RabbitMQ** para comunicação assíncrona
 - **MySQL** para persistência de dados
 
-Este sistema é ideal para projetos que demandem um controle eficiente de pedidos e produtos, bem como para a construção de aplicativos voltados ao serviço de delivery.
+Esta API é ideal para projetos que exigem controle eficiente de pedidos e produtos, além de ser uma base robusta para aplicativos de serviços de delivery.
 
-### Objetivo
-Automatizar e otimizar o controle de pedidos e produtos para restaurantes e serviços de delivery, focados em bebidas alcoólicas e petiscos, proporcionando eficiência e escalabilidade aos processos operacionais.
+### 🏆 Objetivo
+Automatizar e otimizar o controle de pedidos e produtos em restaurantes e serviços de delivery focados em bebidas alcoólicas e petiscos. O sistema foi projetado para proporcionar:
+- Eficiência
+- Escalabilidade
+- Melhoria nos processos operacionais
 
 ---
 
-## 2. Guia de Início Rápido (Quick Start)
+## ⚡ Guia de Início Rápido (Quick Start)
 
-### Primeiros Passos: Executando o Projeto
-
+### 📂 Configurando o Ambiente
 1. Abra o **Spring Tool Suite (STS)** ou **Eclipse**.
 2. No menu principal, selecione:  
    `File → Open Projects from File System...`
 3. Clique em **Directory** e navegue até a pasta onde o repositório foi clonado.
 4. Confirme a seleção e aguarde a importação do projeto.
 
-#### Executando o Projeto
+### ▶️ Executando o Projeto
 1. No **STS** ou **Eclipse**, localize o diretório raiz do projeto, identificado como `PETISCAÍ`.
 2. Clique com o botão direito do mouse sobre o diretório principal do projeto.
-3. Navegue até `Run As → Spring Boot App` para iniciar o servidor.
-4. Após o projeto iniciar, abra o navegador (recomendamos o **Google Chrome**).
+3. Navegue até:  
+   `Run As → Spring Boot App` para iniciar o servidor.
+4. Após a inicialização do projeto, abra o navegador (recomendamos o **Google Chrome**).
 5. Acesse a URL:  
    ```url
    http://localhost:8000/swagger-ui/index.html#/
