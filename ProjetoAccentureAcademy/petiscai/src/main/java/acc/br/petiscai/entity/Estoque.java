@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Estoque {
 
     @Id
@@ -21,36 +24,9 @@ public class Estoque {
     private Produto produto;
     private boolean disponivel;
 
-
-    public Estoque() {
-    }
-
     public Estoque(Produto produto) {
         this.produto = produto;
         this.disponivel = true;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
-
-    public boolean isDisponivel() {
-        return disponivel;
-    }
-
-    public void setDisponivel(boolean disponivel) {
-        this.disponivel = disponivel;
-    }
 }

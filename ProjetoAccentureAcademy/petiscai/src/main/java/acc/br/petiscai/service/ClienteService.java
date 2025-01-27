@@ -19,46 +19,27 @@ public class ClienteService {
     public String save(ClienteDto clienteDto) {
         if (!checaIdade(clienteDto)) {
             return "Cliente menor de idade!";
-        }
-        
-        if (clienteRepository.existsByEmail(clienteDto.getEmail())) {
-            return "Email já cadastrado no sistema!";
-        }
-
-        if (clienteRepository.existsByCpf(clienteDto.getCpf())) {
-            return "CPF já cadastrado no sistema!";
-        }
-
-        try {
-            Cliente cliente = new Cliente(
-                    clienteDto.getCpf(),
-                    clienteDto.getNome(),
-                    clienteDto.getEmail(),
-                    clienteDto.getTelefone(),
-                    clienteDto.getEndereco(),
-                    clienteDto.getIdade());
-            this.clienteRepository.save(cliente);
-            return "Cliente salvo com sucesso!";
-        } catch (Exception e) {
-            return e.getMessage();
+        } else if (this.clienteExistsByEmail(clienteDto)) {
+            return "Email ja cadastrado no sistema!";
+        } else if (this.clienteExistsByCpf(clienteDto)) {
+            return "CPF ja cadastrado no sistema!";
+        } else {
+            try {
+                Cliente cliente = new Cliente(clienteDto);
+                this.clienteRepository.save(cliente);
+                return "Cliente salvo com sucesso!";
+            } catch (Exception e) {
+                return e.getMessage();
+            }
         }
     }
 
-    // public String save(ClienteDto clienteDto) {
-    //     if (checaIdade(clienteDto)) {
-    //         try {
-    //             Cliente cliente = new Cliente(clienteDto.getCpf(), clienteDto.getNome(), clienteDto.getEmail(),
-    //                     clienteDto.getTelefone(), clienteDto.getEndereco(), clienteDto.getIdade());
-    //             this.clienteRepository.save(cliente);
-    //             return "Cliente salvo com sucesso!";
-    //         } catch (Exception e) {
-    //             return e.getMessage();
-    //         }
-    //     } else {
-    //         return ("Cliente menor de idade!");
-    //     }
-    // }
-
+    private boolean clienteExistsByEmail(ClienteDto clienteDto) {
+        return clienteRepository.existsByEmail(clienteDto.getEmail());
+    }
+    private boolean clienteExistsByCpf(ClienteDto clienteDto) {
+        return clienteRepository.existsByCpf(clienteDto.getCpf());
+    }
     public String deleteById(long id) {
         if (findByIdBool(id)) {
 
@@ -69,7 +50,7 @@ public class ClienteService {
                 return e.getMessage();
             }
         } else {
-            return "Cliente não encontrado";
+            return "Cliente nao encontrado";
         }
 
     }
@@ -82,13 +63,13 @@ public class ClienteService {
         }
     }
 
-    public boolean checaIdade(ClienteDto clienteDto) {
+    private boolean checaIdade(ClienteDto clienteDto) {
         return clienteDto.getIdade() >= 18;
     }
 
     public Cliente findById(long id) {
 
-        if (findByIdBool(id)) {
+        if (this.findByIdBool(id)) {
             try {
                 return this.clienteRepository.findById(id).get();
             } catch (Exception e) {
@@ -99,17 +80,17 @@ public class ClienteService {
         }
     }
 
-    public boolean findByIdBool(long id) {
+    private boolean findByIdBool(long id) {
         return this.clienteRepository.findById(id).isPresent();
     }
 
     public String update(ClienteDto clienteDto, long id) {
-        if (findByIdBool(id)) {
+        if (this.findByIdBool(id)) {
             try {
                 Cliente cliente = new Cliente(id, clienteDto.getCpf(), clienteDto.getNome(), clienteDto.getEmail(),
                         clienteDto.getTelefone(), clienteDto.getEndereco(), clienteDto.getIdade());
 
-                if (checaIdade(clienteDto)) {
+                if (this.checaIdade(clienteDto)) {
                     this.clienteRepository.save(cliente);
                 } else {
                     return "Cliente menor de idade!";
@@ -120,7 +101,7 @@ public class ClienteService {
                 return e.getMessage();
             }
         } else {
-            return "Cliente não encontrado";
+            return "Cliente nao encontrado";
         }
     }
 
