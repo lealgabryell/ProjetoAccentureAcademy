@@ -101,73 +101,78 @@ Petiscai
 │   └── resources/
 │       └── application.properties
 ├── pom.xml
+```
+
+## 🗂️ Principais Diretórios e Arquivos
+
+### `src/main/java/acc.br.petiscai/`
+- **`ApplicationJava`**: Classe principal para inicializar o projeto.
+- **`config/`**: Configurações gerais do projeto.
+  - **`CorsWebConfig`**: Configuração do CORS.
+- **`controller/`**: Controladores para os endpoints da API.
+  - **`ClienteController`**, **`EstoqueController`**, **`PedidoController`**, **`ProdutoController`**.
+- **`dto/`**: Data Transfer Objects (DTOs) utilizados para comunicação entre camadas.
+  - **`ClienteDto`**, **`ItemPedidoDto`**, **`PedidoDto`**, **`ProdutoDto`**.
+- **`entity/`**: Entidades representando tabelas do banco de dados.
+  - **`Cliente`**, **`Estoque`**, **`ItemPedido`**, **`Pagamento`**, **`Pedido`**, **`Produto`**.
+- **`producer/`**: Gerenciamento de comunicação assíncrona com RabbitMQ.
+  - **`config/`**: Configuração do RabbitMQ.
+  - **`controller/`**: Controlador para usuários.
+  - **`dto/`**: DTOs específicos para mensagens RabbitMQ.
+    - **`RegisterUserDto`**, **`UserRegisteredPayload`**.
+- **`repository/`**: Repositórios para acesso ao banco de dados.
+  - **`ClienteRepository`**, **`EstoqueRepository`**, **`PedidoRepository`**, **`ProdutoRepository`**.
+- **`service/`**: Serviços que implementam as regras de negócio.
+  - **`ClienteService`**, **`EstoqueService`**, **`PedidoService`**, **`ProdutoService`**.
+
+### `src/main/resources/`
+- **`application.properties`**: Configurações do projeto.
+
+### `pom.xml`
+- Configuração do Maven para gerenciamento de dependências.
 
 ---
 
-### Principais Diretórios e Arquivos
+## 🏗️ Arquitetura do Sistema
 
-- **`src/main/java/acc.br.petiscai/`**
-  - **`ApplicationJava`**: Classe principal para inicializar o projeto.
-  - **`config/`**: Configurações gerais do projeto.
-    - **`CorsWebConfig`**: Configuração do CORS.
-  - **`controller/`**: Controladores para os endpoints da API.
-    - **`ClienteController`**, **`EstoqueController`**, **`PedidoController`**, **`ProdutoController`**.
-  - **`dto/`**: Data Transfer Objects (DTOs) utilizados para comunicação entre camadas.
-    - **`ClienteDto`**, **`ItemPedidoDto`**, **`PedidoDto`**, **`ProdutoDto`**.
-  - **`entity/`**: Entidades representando tabelas do banco de dados.
-    - **`Cliente`**, **`Estoque`**, **`ItemPedido`**, **`Pagamento`**, **`Pedido`**, **`Produto`**.
-  - **`producer/`**: Gerenciamento de comunicação assíncrona com RabbitMQ.
-    - **`config/`**: Configuração do RabbitMQ.
-    - **`controller/`**: Controlador para usuários.
-    - **`dto/`**: DTOs específicos para mensagens RabbitMQ.
-  - **`repository/`**: Repositórios para acesso ao banco de dados.
-    - **`ClienteRepository`**, **`EstoqueRepository`**, **`PedidoRepository`**, **`ProdutoRepository`**.
-  - **`service/`**: Serviços que implementam as regras de negócio.
-    - **`ClienteService`**, **`EstoqueService`**, **`PedidoService`**, **`ProdutoService`**.
-
-- **`src/main/resources/`**
-  - **`application.properties`**: Configurações do projeto.
-
-- **`pom.xml`**: Configuração do Maven para gerenciamento de dependências.
-
-
----
-
-### Arquitetura do Sistema
 A arquitetura do sistema é baseada no modelo Cliente-Servidor, com a seguinte configuração:
+
 Cliente → API Petiscai → Banco de Dados MySQL
 
 
-Essa estrutura permite o cadastro e gerenciamento de dados, incluindo clientes, produtos, pedidos e status de pagamento, com suporte a operações síncronas e assíncronas (via **RabbitMQ**).
+Essa arquitetura permite:
+- Cadastro e gerenciamento de **clientes**, **produtos**, **pedidos** e **status de pagamento**.
+- Suporte a operações síncronas e assíncronas com **RabbitMQ**.
 
 ---
 
-### Endpoints da API
+## 🌐 Endpoints da API
 
-#### **ClienteController**
+### 🧑‍💼 ClienteController
 - `POST /api/cliente/save` - Criação de um novo cliente.
 - `PUT /api/cliente/update/{id}` - Atualização dos dados de um cliente.
 - `GET /api/cliente/findById/{id}` - Busca de um cliente pelo ID.
 - `GET /api/cliente/findAll` - Busca de todos os clientes cadastrados.
 - `DELETE /api/cliente/delete/{id}` - Exclusão de um cliente pelo ID.
 
-#### **ProdutoController**
+### 📦 ProdutoController
 - `POST /api/produto/save` - Criação de um novo produto.
 - `PUT /api/produto/update/{id}` - Atualização de um produto pelo ID.
 - `GET /api/produto/findById/{id}` - Busca de um produto pelo ID.
 - `GET /api/produto/findAll` - Busca de todos os produtos cadastrados.
 - `DELETE /api/produto/delete/{id}` - Exclusão de um produto pelo ID.
 
-#### **PedidoController**
-- `POST /api/pedido/create` - Criação de um novo pedido (associando cliente e produto).
+### 🛒 PedidoController
+- `POST /api/pedido/create` - Criação de um novo pedido.
 - `GET /api/pedido/{id}` - Busca de um pedido pelo ID.
 - `GET /api/pedido/findAll` - Busca de todos os pedidos.
 
 ---
 
-### Exemplo de Requisição e Resposta
+## 📝 Exemplo de Requisição e Resposta
 
-**Requisição:**
+### **Requisição**
+
 ```json
 POST /api/cliente/save
 {
@@ -175,5 +180,4 @@ POST /api/cliente/save
     "email": "joao@example.com",
     "telefone": "123456789"
 }
-
 
