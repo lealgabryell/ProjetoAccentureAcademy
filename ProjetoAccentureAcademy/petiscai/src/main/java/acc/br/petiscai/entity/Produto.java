@@ -16,9 +16,6 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    @OneToOne(mappedBy = "produto")
-    @JsonIgnoreProperties("produto")
-    private Estoque estoque;
     private String tipo;
     private Double preco;
     @Column(nullable = true)
