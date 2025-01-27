@@ -44,51 +44,53 @@ Automatizar e otimizar o controle de pedidos e produtos para restaurantes e serv
 ### Estrutura do Projeto
 O projeto segue a seguinte estrutura de pastas e arquivos principais:
 
+```plaintext
 Petiscai
-├── src/main/java
-│   ├── acc.br.petiscai
-│   │   ├── ApplicationJava
-│   │   ├── config
-│   │   │   └── CorsWebConfig
-│   │   ├── controller
-│   │   │   ├── ClienteController
-│   │   │   ├── EstoqueController
-│   │   │   ├── PedidoController
-│   │   │   └── ProdutoController
-│   │   ├── dto
-│   │   │   ├── ClienteDto
-│   │   │   ├── ItemPedidoDto
-│   │   │   ├── PedidoDto
-│   │   │   └── ProdutoDto
-│   │   ├── entity
-│   │   │   ├── Cliente
-│   │   │   ├── Estoque
-│   │   │   ├── ItemPedido
-│   │   │   ├── Pagamento
-│   │   │   ├── Pedido
-│   │   │   └── Produto
-│   │   ├── producer
-│   │   │   ├── config
-│   │   │   │   └── RabbitMQConfig
-│   │   │   ├── controller
-│   │   │   │   └── UserController
-│   │   │   ├── dto
-│   │   │   │   ├── RegisterUserDto
-│   │   │   │   └── UserRegisteredPayload
-│   │   ├── repository
-│   │   │   ├── ClienteRepository
-│   │   │   ├── EstoqueRepository
-│   │   │   ├── PedidoRepository
-│   │   │   └── ProdutoRepository
-│   │   ├── service
-│   │   │   ├── ClienteService
-│   │   │   ├── EstoqueService
-│   │   │   ├── PedidoService
-│   │   │   └── ProdutoService
-├── src/main/resources
-│   └── application.properties
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── acc.br.petiscai/
+│   │   │       ├── ApplicationJava
+│   │   │       ├── config/
+│   │   │       │   └── CorsWebConfig
+│   │   │       ├── controller/
+│   │   │       │   ├── ClienteController
+│   │   │       │   ├── EstoqueController
+│   │   │       │   ├── PedidoController
+│   │   │       │   └── ProdutoController
+│   │   │       ├── dto/
+│   │   │       │   ├── ClienteDto
+│   │   │       │   ├── ItemPedidoDto
+│   │   │       │   ├── PedidoDto
+│   │   │       │   └── ProdutoDto
+│   │   │       ├── entity/
+│   │   │       │   ├── Cliente
+│   │   │       │   ├── Estoque
+│   │   │       │   ├── ItemPedido
+│   │   │       │   ├── Pagamento
+│   │   │       │   ├── Pedido
+│   │   │       │   └── Produto
+│   │   │       ├── producer/
+│   │   │       │   ├── config/
+│   │   │       │   │   └── RabbitMQConfig
+│   │   │       │   ├── controller/
+│   │   │       │   │   └── UserController
+│   │   │       │   ├── dto/
+│   │   │       │   │   ├── RegisterUserDto
+│   │   │       │   │   └── UserRegisteredPayload
+│   │   │       ├── repository/
+│   │   │       │   ├── ClienteRepository
+│   │   │       │   ├── EstoqueRepository
+│   │   │       │   ├── PedidoRepository
+│   │   │       │   └── ProdutoRepository
+│   │   │       ├── service/
+│   │   │       │   ├── ClienteService
+│   │   │       │   ├── EstoqueService
+│   │   │       │   ├── PedidoService
+│   │   │       │   └── ProdutoService
+│   └── resources/
+│       └── application.properties
 ├── pom.xml
-
 
 ### Principais Diretórios e Arquivos
 
