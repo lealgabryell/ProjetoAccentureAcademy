@@ -1,2 +1,3 @@
-# ProjetoAccentureAcademy
-Repositório do projeto da Academia BackEnd Java da Accenture
+# MinhaApi
+Repositório da minha API:
+  - Esse é um exemplo de um péssimo ReadMe.md
