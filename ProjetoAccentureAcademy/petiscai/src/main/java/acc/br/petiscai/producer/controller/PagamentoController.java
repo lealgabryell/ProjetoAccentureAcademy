@@ -1,8 +1,8 @@
 package acc.br.petiscai.producer.controller;
 
 
-import acc.br.petiscai.producer.dto.RegisterUserDto;
-import acc.br.petiscai.producer.dto.UserRegisteredPayload;
+import acc.br.petiscai.producer.dto.PagamentoRegisteredPayload;
+import acc.br.petiscai.producer.dto.RegisterPagamentoDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -16,35 +16,33 @@ import java.util.Random;
 
 
 @RestController
-public class UserController {
+public class PagamentoController {
 
     static String QUEUE_NAME = "user-registration-Equipe9";
     private final RabbitTemplate rabbitTemplate;
 
 
-    public UserController(RabbitTemplate rabbitTemplate) {
+    public PagamentoController(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> registerUser(@RequestBody RegisterUserDto registerUserDto) throws JsonProcessingException {
-
-        // TODO save user in the database
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody RegisterPagamentoDto registerPagamentoDto) throws JsonProcessingException {
 
         Random random = new Random();
 
         int confirmationCode = random.nextInt(900000) + 100000;
-        UserRegisteredPayload queuePayload = new UserRegisteredPayload(
+       PagamentoRegisteredPayload queuePayload = new PagamentoRegisteredPayload(
 
-                registerUserDto.name(),
-                registerUserDto.email(),
+               registerPagamentoDto.statusConfirmation(),
+                registerPagamentoDto.idPedido(),
                 confirmationCode
         );
         ObjectMapper objectMapper = new ObjectMapper();
         String queuePayloadString = objectMapper.writeValueAsString(queuePayload);
         rabbitTemplate.convertAndSend(QUEUE_NAME, queuePayloadString);
         Map<String, String> response = new HashMap<>();
-        response.put("message", "User registered successfully!");
+        response.put("message", "Pagamento registrado com sucesso!");
         return ResponseEntity.ok(response);
 
     }
