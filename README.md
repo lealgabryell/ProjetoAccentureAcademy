@@ -1,183 +1,65 @@
-# API Petiscaí
+<p align="center">
+  <!-- Substitua pelo caminho da sua logo, caso possua -->
+  <img src="./.github/logo.png" width="200px" alt="Logo API Petiscai">
+</p>
 
-## 📖 Introdução
-
-### 🎯 Título do Projeto/API
-**API Petiscaí**
-
-### 📋 Descrição Geral
-A **API Petiscaí** é uma solução projetada para gerenciar o cadastro de bebidas alcoólicas e petiscos, abrangendo desde o registro de produtos até o gerenciamento de pedidos de clientes. 
-
-Os dados são armazenados em um banco de dados **MySQL**, estruturado com tabelas para:
-- **Clientes**
-- **Produtos**
-- **Pedidos**
-- **Status de pagamento**
-
-#### 🚀 Tecnologias Utilizadas
-- **Java** com o framework **Spring Boot**
-- **Swagger** para documentação
-- **RabbitMQ** para comunicação assíncrona
-- **MySQL** para persistência de dados
-
-Esta API é ideal para projetos que exigem controle eficiente de pedidos e produtos, além de ser uma base robusta para aplicativos de serviços de delivery.
-
-### 🏆 Objetivo
-Automatizar e otimizar o controle de pedidos e produtos em restaurantes e serviços de delivery focados em bebidas alcoólicas e petiscos. O sistema foi projetado para proporcionar:
-- Eficiência
-- Escalabilidade
-- Melhoria nos processos operacionais
+<p align="center">
+  <b>API Petiscai</b><br>
+  Gerencie de forma simples e eficiente o cadastro de bebidas alcoólicas e petiscos, desde o registro de produtos até o controle de pedidos!
+</p>
 
 ---
 
-## ⚡ Guia de Início Rápido (Quick Start)
+<!-- Você pode adicionar um link para outras línguas, caso desejar -->
+<!-- 
+<p align="center">
+  <i>Leia em outros idiomas:</i>
+  <a href="./translations/README-ptBR.md">Português</a>
+</p>
+-->
 
-### 📂 Configurando o Ambiente
-1. Abra o **Spring Tool Suite (STS)** ou **Eclipse**.
-2. No menu principal, selecione:  
-   `File → Open Projects from File System...`
-3. Clique em **Directory** e navegue até a pasta onde o repositório foi clonado.
-4. Confirme a seleção e aguarde a importação do projeto.
+<h2 align="center">🚀 Sobre</h2>
 
-### ▶️ Executando o Projeto
-1. No **STS** ou **Eclipse**, localize o diretório raiz do projeto, identificado como `PETISCAÍ`.
-2. Clique com o botão direito do mouse sobre o diretório principal do projeto.
-3. Navegue até:  
-   `Run As → Spring Boot App` para iniciar o servidor.
-4. Após a inicialização do projeto, abra o navegador (recomendamos o **Google Chrome**).
-5. Acesse a URL:  
-   ```url
-   http://localhost:8000/swagger-ui/index.html#/
+<p align="center">
+  Esta API utiliza:
+</p>
+<ul align="center">
+  <li>Java com Spring Boot</li>
+  <li>Swagger para documentação</li>
+  <li>RabbitMQ para comunicação assíncrona</li>
+  <li>MySQL para persistência de dados</li>
+</ul>
 
-## 3. Descrição Técnica
-
-### Estrutura do Projeto
-O projeto segue a seguinte estrutura de pastas e arquivos principais:
-
-```plaintext
-Petiscai
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── acc.br.petiscai/
-│   │   │       ├── ApplicationJava
-│   │   │       ├── config/
-│   │   │       │   └── CorsWebConfig
-│   │   │       ├── controller/
-│   │   │       │   ├── ClienteController
-│   │   │       │   ├── EstoqueController
-│   │   │       │   ├── PedidoController
-│   │   │       │   └── ProdutoController
-│   │   │       ├── dto/
-│   │   │       │   ├── ClienteDto
-│   │   │       │   ├── ItemPedidoDto
-│   │   │       │   ├── PedidoDto
-│   │   │       │   └── ProdutoDto
-│   │   │       ├── entity/
-│   │   │       │   ├── Cliente
-│   │   │       │   ├── Estoque
-│   │   │       │   ├── ItemPedido
-│   │   │       │   ├── Pagamento
-│   │   │       │   ├── Pedido
-│   │   │       │   └── Produto
-│   │   │       ├── producer/
-│   │   │       │   ├── config/
-│   │   │       │   │   └── RabbitMQConfig
-│   │   │       │   ├── controller/
-│   │   │       │   │   └── UserController
-│   │   │       │   ├── dto/
-│   │   │       │   │   ├── RegisterUserDto
-│   │   │       │   │   └── UserRegisteredPayload
-│   │   │       ├── repository/
-│   │   │       │   ├── ClienteRepository
-│   │   │       │   ├── EstoqueRepository
-│   │   │       │   ├── PedidoRepository
-│   │   │       │   └── ProdutoRepository
-│   │   │       ├── service/
-│   │   │       │   ├── ClienteService
-│   │   │       │   ├── EstoqueService
-│   │   │       │   ├── PedidoService
-│   │   │       │   └── ProdutoService
-│   └── resources/
-│       └── application.properties
-├── pom.xml
-```
-
-## 🗂️ Principais Diretórios e Arquivos
-
-### `src/main/java/acc.br.petiscai/`
-- **`ApplicationJava`**: Classe principal para inicializar o projeto.
-- **`config/`**: Configurações gerais do projeto.
-  - **`CorsWebConfig`**: Configuração do CORS.
-- **`controller/`**: Controladores para os endpoints da API.
-  - **`ClienteController`**, **`EstoqueController`**, **`PedidoController`**, **`ProdutoController`**.
-- **`dto/`**: Data Transfer Objects (DTOs) utilizados para comunicação entre camadas.
-  - **`ClienteDto`**, **`ItemPedidoDto`**, **`PedidoDto`**, **`ProdutoDto`**.
-- **`entity/`**: Entidades representando tabelas do banco de dados.
-  - **`Cliente`**, **`Estoque`**, **`ItemPedido`**, **`Pagamento`**, **`Pedido`**, **`Produto`**.
-- **`producer/`**: Gerenciamento de comunicação assíncrona com RabbitMQ.
-  - **`config/`**: Configuração do RabbitMQ.
-  - **`controller/`**: Controlador para usuários.
-  - **`dto/`**: DTOs específicos para mensagens RabbitMQ.
-    - **`RegisterUserDto`**, **`UserRegisteredPayload`**.
-- **`repository/`**: Repositórios para acesso ao banco de dados.
-  - **`ClienteRepository`**, **`EstoqueRepository`**, **`PedidoRepository`**, **`ProdutoRepository`**.
-- **`service/`**: Serviços que implementam as regras de negócio.
-  - **`ClienteService`**, **`EstoqueService`**, **`PedidoService`**, **`ProdutoService`**.
-
-### `src/main/resources/`
-- **`application.properties`**: Configurações do projeto.
-
-### `pom.xml`
-- Configuração do Maven para gerenciamento de dependências.
+<p align="center">
+  É voltada para restaurantes e serviços de delivery, permitindo um controle preciso de pedidos, produtos e clientes. 
+</p>
 
 ---
 
-## 🏗️ Arquitetura do Sistema
+<h2 id="doc-templates">📝 Documentação</h2>
 
-A arquitetura do sistema é baseada no modelo Cliente-Servidor, com a seguinte configuração:
+<div>
+  <!-- Exemplos de badges; ajuste conforme a sua necessidade -->
+  <!-- Substitua os links e textos pelos que fazem sentido para o seu projeto -->
+  [DOC_FULL_BADGE]: https://img.shields.io/badge/Documentação_Completa-000?style=for-the-badge&logo=readme
+  [DOC_CLIENTE_BADGE]: https://img.shields.io/badge/Cliente_Controller-000?style=for-the-badge&logo=java
+  [DOC_PRODUTO_BADGE]: https://img.shields.io/badge/Produto_Controller-000?style=for-the-badge&logo=java
+  [DOC_PEDIDO_BADGE]: https://img.shields.io/badge/Pedido_Controller-000?style=for-the-badge&logo=java
 
-Cliente → API Petiscai → Banco de Dados MySQL
+  [![doc_full][DOC_FULL_BADGE]](./docs/README.md)
+  [![doc_cliente][DOC_CLIENTE_BADGE]](./docs/cliente.md)
+  [![doc_produto][DOC_PRODUTO_BADGE]](./docs/produto.md)
+  [![doc_pedido][DOC_PEDIDO_BADGE]](./docs/pedido.md)
+</div>
 
-
-Essa arquitetura permite:
-- Cadastro e gerenciamento de **clientes**, **produtos**, **pedidos** e **status de pagamento**.
-- Suporte a operações síncronas e assíncronas com **RabbitMQ**.
-
----
-
-## 🌐 Endpoints da API
-
-### 🧑‍💼 ClienteController
-- `POST /api/cliente/save` - Criação de um novo cliente.
-- `PUT /api/cliente/update/{id}` - Atualização dos dados de um cliente.
-- `GET /api/cliente/findById/{id}` - Busca de um cliente pelo ID.
-- `GET /api/cliente/findAll` - Busca de todos os clientes cadastrados.
-- `DELETE /api/cliente/delete/{id}` - Exclusão de um cliente pelo ID.
-
-### 📦 ProdutoController
-- `POST /api/produto/save` - Criação de um novo produto.
-- `PUT /api/produto/update/{id}` - Atualização de um produto pelo ID.
-- `GET /api/produto/findById/{id}` - Busca de um produto pelo ID.
-- `GET /api/produto/findAll` - Busca de todos os produtos cadastrados.
-- `DELETE /api/produto/delete/{id}` - Exclusão de um produto pelo ID.
-
-### 🛒 PedidoController
-- `POST /api/pedido/create` - Criação de um novo pedido.
-- `GET /api/pedido/{id}` - Busca de um pedido pelo ID.
-- `GET /api/pedido/findAll` - Busca de todos os pedidos.
+> **Observação**: Os links acima (./docs/*.md) devem ser ajustados para o diretório e arquivos onde está a documentação de cada assunto.
 
 ---
 
-## 📝 Exemplo de Requisição e Resposta
+<h2 id="contribute">🤝 Contribuindo</h2>
 
-### **Requisição**
-
-```json
-POST /api/cliente/save
-{
-    "nome": "João Silva",
-    "email": "joao@example.com",
-    "telefone": "123456789"
-}
+1. Faça um fork do repositório
+2. Crie uma nova branch com a sua feature/fix:
+   ```bash
+   git checkout -b feature/minha-feature
 
