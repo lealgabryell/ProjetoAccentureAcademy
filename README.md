@@ -1,6 +1,6 @@
 <p align="center">
   <!-- Substitua pelo caminho da sua logo, caso possua -->
-  ![Texto alternativo][(https://link.com/para/imagem.png](https://drive.google.com/file/d/1PY43orhVrAgRDYwGx3k5-rpecaDmZfSY/view?usp=sharing)
+  ![Texto alternativo](https://drive.google.com/file/d/1PY43orhVrAgRDYwGx3k5-rpecaDmZfSY/view?usp=sharing)
 </p>
 
 <p align="center">
