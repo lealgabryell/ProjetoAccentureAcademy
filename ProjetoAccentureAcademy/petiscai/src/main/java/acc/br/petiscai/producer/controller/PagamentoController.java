@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -28,7 +29,7 @@ public class PagamentoController {
     @Autowired
     PagamentoService pagamentoService;
 
-    static String QUEUE_NAME = "user-registration-Equipe9";
+    static String QUEUE_NAME = "payment-registration-Equipe9";
     private final RabbitTemplate rabbitTemplate;
 
 
@@ -42,28 +43,18 @@ public class PagamentoController {
         Random random = new Random();
 
         int confirmationCode = random.nextInt(900000) + 100000;
-       PagamentoRegisteredPayload queuePayload = new PagamentoRegisteredPayload(
+        PagamentoRegisteredPayload queuePayload = new PagamentoRegisteredPayload(
 
-               registerPagamentoDto.statusConfirmation(),
-               registerPagamentoDto.idPedido(),
+                registerPagamentoDto.statusConfirmation(),
+                registerPagamentoDto.idPedido(),
                 confirmationCode
         );
         ObjectMapper objectMapper = new ObjectMapper();
         String queuePayloadString = objectMapper.writeValueAsString(queuePayload);
         rabbitTemplate.convertAndSend(QUEUE_NAME, queuePayloadString);
         Map<String, String> response = new HashMap<>();
-
-        Pagamento pagamento = new Pagamento(); //instancia de um pagamento
-
-        Pedido pedido = this.pedidoRepository.findById(registerPagamentoDto.idPedido()).get(); //encontra um pedido pelo id passado no DTO
-        pedido.getPagamento().setStatus(true); //muda o status do pagamento
-        this.pedidoRepository.save(pedido); //faz update do pedido no bd
-        pagamento.setPedido(pedido); //guarda o pedido na tabela de pagamento
-        this.pagamentoService.save(pagamento);
-        response.put("message", "Pagamento registrado com sucesso!");
+        response.put("message", "Pagamento na fila para ser registrado!");
         return ResponseEntity.ok(response);
 
     }
-
-    //TODO Alterar status do pagamento de FALSE para TRUE, e ao fazer isso, alterar o status do pedido
 }

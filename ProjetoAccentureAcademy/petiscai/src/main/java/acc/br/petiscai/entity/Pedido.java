@@ -30,7 +30,6 @@ public class Pedido {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_pagamento")
-    @JsonIgnoreProperties("pedido")
     private Pagamento pagamento;
 
     private BigDecimal total;

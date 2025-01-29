@@ -30,8 +30,6 @@ public class PedidoService {
     private ProdutoRepository produtoRepository;
 
     @Autowired
-    private EstoqueService estoqueService;
-    @Autowired
     private PagamentoRepository pagamentoRepository;
 
     @Transactional
@@ -89,6 +87,7 @@ public class PedidoService {
             pedido.setPagamento(pagamento); // 5) Setar status do Pagamento no Pedido
             pagamento.setPedido(pedido); // 6) Setar Pedido no objeto Pagamento
 
+            this.pagamentoRepository.save(pagamento);//Salva pagamento no bd
             this.pedidoRepository.save(pedido); // Devido ao cascade, itens também serão salvos
 
             return "Pedido criado com sucesso! ID: " + pedido.getId() + " | Total: " + total + "\n Aguardando pagamento...";
