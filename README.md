@@ -1,6 +1,6 @@
 <p align="center">
   <!-- Substitua pelo caminho da sua logo, caso possua -->
- ![Image](https://github.com/user-attachments/assets/c2c55aba-ce92-4b37-9c77-91607c77a981)
+[ ![Image](https://github.com/user-attachments/assets/c2c55aba-ce92-4b37-9c77-91607c77a981)](https://github.com/lealgabryell/ProjetoAccentureAcademy/issues/2#issue-2818216947)
 </p>
 
 <p align="center">
