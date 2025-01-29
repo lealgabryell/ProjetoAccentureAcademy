@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/c2c55aba-ce92-4b37-9c77-91607c77a981" width="300" alt="Imagem">
+  <img src="https://github.com/user-attachments/assets/c2c55aba-ce92-4b37-9c77-91607c77a981" width="200" alt="Imagem">
 </p>
 
 ---
@@ -16,7 +16,7 @@ Automatizar e otimizar o controle de pedidos e produtos em restaurantes e servi�
 
 ## Navegação
 
-[![Guia de Inicio](https://img.shields.io/badge/BANCO_DE_DADOS-000?style=for-the-badge&logo=database)](#banco-de-dados) [![TECNOLOGIAS UTILIZADAS](https://img.shields.io/badge/TECNOLOGIAS_UTILIZADAS-000?style=for-the-badge&logo=github)](#tecnologias-utilizadas) [![DESCRIÇÃO TÉCNICA](https://img.shields.io/badge/DESCRIÇÃO_TÉCNICA-000?style=for-the-badge&logo=markdown)](#descrição-técnica) [![ARQUITETURA DO SISTEMA](https://img.shields.io/badge/ARQUITETURA_DO_SISTEMA-000?style=for-the-badge&logo=visualstudiocode)](#arquitetura-do-sistema)
+[![Banco de Dados](https://img.shields.io/badge/Banco_de_Dados-000?style=for-the-badge&logo=database)](https://github.com/lealgabryell/ProjetoAccentureAcademy/issues/3) [![Descrição Técnica](https://img.shields.io/badge/Descrição_Técnica-000?style=for-the-badge&logo=)](https://github.com/lealgabryell/ProjetoAccentureAcademy/issues/5) [![Configurações](https://img.shields.io/badge/Configurações-000?style=for-the-badge&logo=gear)](https://github.com/lealgabryell/ProjetoAccentureAcademy/issues/6) [![Casos de Uso](https://img.shields.io/badge/Casos_de_Uso-000?style=for-the-badge&logo=usecase)](https://github.com/lealgabryell/ProjetoAccentureAcademy/issues/7)
 
 
 <!-- Você pode adicionar um link para outras línguas, caso desejar -->
@@ -62,3 +62,23 @@ git clone https://github.com/lealgabryell/ProjetoAccentureAcademy.git
    ```url
    http://localhost:8000/swagger-ui/index.html#/
     ```
+
+---
+
+## 🧑‍💻 Desenvolvedores
+
+Este projeto foi desenvolvido por:
+
+- **[Roberto Braga de Oliveira Filho](https://github.com/robertobr122)**
+- **[Gabryell Leal Rocha](https://github.com/lealgabryell)**
+- **[Gabriel Nóbrega de Carvalho](https://github.com/gabrielcarvalhoo)**
+
+<p align="center"> <img src="https://github.com/robertobr122.png" width="80px" alt="Roberto Braga"> <img src="https://github.com/lealgabryell.png" width="80px" alt="Gabriel Leal"> <img src="https://github.com/gabrielncarvalhoo.png" width="80px" alt="Gabriel Carvalho"> </p>
+
+---
+
+## 📃 Licença
+
+Este projeto está sob a licença [MIT](./LICENSE). Sinta-se à vontade para clonar e contribuir!
+
+
