@@ -62,3 +62,22 @@ git clone https://github.com/lealgabryell/ProjetoAccentureAcademy.git
    ```url
    http://localhost:8000/swagger-ui/index.html#/
     ```
+
+---
+
+## 🧑‍💻 Desenvolvedores
+
+Este projeto foi desenvolvido por:
+
+- **[Roberto Braga de Oliveira Filho](https://github.com/robertobr122)**
+- **[Gabryell Leal Rocha](https://github.com/lealgabryell)**
+- **[Gabriel Nóbrega de Carvalho](https://github.com/gabrielcarvalhoo)**
+
+<p align="center"> <img src="https://github.com/robertobr122.png" width="80px" alt="Roberto Braga"> <img src="https://github.com/lealgabryell.png" width="80px" alt="Gabriel Leal"> <img src="https://github.com/gabrielncarvalhoo.png" width="80px" alt="Gabriel Carvalho"> </p>
+
+---
+
+## 📃 Licença
+
+Este projeto está sob a licença [MIT](./LICENSE). Sinta-se à vontade para clonar e contribuir!
+
