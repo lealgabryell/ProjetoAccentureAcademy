@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Data //Getter, Setter, EqualsAndHashCode e ToString
 public class Pagamento {
 
@@ -16,9 +15,12 @@ public class Pagamento {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "pedido_id")
+    @JoinColumn(name = "id_pedido")
     private Pedido pedido;
 
-    @PrimaryKeyJoinColumn
     private boolean status;
+
+    public Pagamento() {
+        this.status = false;
+    }
 }

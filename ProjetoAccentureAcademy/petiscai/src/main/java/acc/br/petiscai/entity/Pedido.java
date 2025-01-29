@@ -28,8 +28,9 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itens = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "status_pagamento")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_pagamento")
+    @JsonIgnoreProperties("pedido")
     private Pagamento pagamento;
 
     private BigDecimal total;

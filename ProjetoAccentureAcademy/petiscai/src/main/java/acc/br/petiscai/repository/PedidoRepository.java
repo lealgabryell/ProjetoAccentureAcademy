@@ -29,4 +29,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     @Query("SELECT p FROM Pedido p WHERE p.cliente.id = :idCliente")
     List<Pedido> findByClienteId(Long idCliente);
 
+    @Query("SELECT p.pagamento.status FROM Pedido p WHERE p.id = :idPedido")
+    boolean getStatusPagamento(Long idPedido);
+
 }

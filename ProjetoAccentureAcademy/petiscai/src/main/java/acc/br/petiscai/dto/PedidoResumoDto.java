@@ -13,5 +13,6 @@ public class PedidoResumoDto {
     private Long idPedido;
     private String nomeCliente;
     private BigDecimal subtotal;
+    private String pagamento;
 
 }

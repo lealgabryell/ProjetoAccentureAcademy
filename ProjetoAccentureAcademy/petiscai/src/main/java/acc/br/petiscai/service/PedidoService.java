@@ -3,11 +3,9 @@ package acc.br.petiscai.service;
 import acc.br.petiscai.dto.PedidoDto;
 import acc.br.petiscai.dto.ItemPedidoDto;
 import acc.br.petiscai.dto.PedidoResumoDto;
-import acc.br.petiscai.entity.Cliente;
-import acc.br.petiscai.entity.ItemPedido;
-import acc.br.petiscai.entity.Pedido;
-import acc.br.petiscai.entity.Produto;
+import acc.br.petiscai.entity.*;
 import acc.br.petiscai.repository.ClienteRepository;
+import acc.br.petiscai.repository.PagamentoRepository;
 import acc.br.petiscai.repository.PedidoRepository;
 import acc.br.petiscai.repository.ProdutoRepository;
 import jakarta.transaction.Transactional;
@@ -33,74 +31,81 @@ public class PedidoService {
 
     @Autowired
     private EstoqueService estoqueService;
+    @Autowired
+    private PagamentoRepository pagamentoRepository;
 
     @Transactional
     public String criarPedido(PedidoDto pedidoDto) {
 
-        // 1) Buscar cliente
-        Optional<Cliente> optCliente = clienteRepository.findById(pedidoDto.getClienteId());
+        Optional<Cliente> optCliente = clienteRepository.findById(pedidoDto.getClienteId());  // 1) Buscar cliente
         if (optCliente.isEmpty()) {
             return "Cliente não encontrado.";
-        }
+        } else {
+            Cliente cliente = optCliente.get();
 
-        Cliente cliente = optCliente.get();
+            Pedido pedido = new Pedido(); // 2) Criar objeto Pedido
+            pedido.setCliente(cliente);
+            pedido.setItens(new ArrayList<>());
+            BigDecimal total = BigDecimal.ZERO;
 
-        // 2) Criar objeto Pedido
-        Pedido pedido = new Pedido();
-        pedido.setCliente(cliente);
-        pedido.setItens(new ArrayList<>());
-        BigDecimal total = BigDecimal.ZERO;
 
-        // 3) Validar itens e montar o pedido
-        for (ItemPedidoDto item : pedidoDto.getItens()) {
-            Optional<Produto> optProduto = produtoRepository.findById(item.getProdutoId());
-            if (optProduto.isEmpty()) {
-                return "Produto não encontrado: " + item.getProdutoId();
+            for (ItemPedidoDto item : pedidoDto.getItens()) { // 3) Validar itens e montar o pedido
+                Optional<Produto> optProduto = produtoRepository.findById(item.getProdutoId());
+                if (optProduto.isEmpty()) {
+                    return "Produto não encontrado: " + item.getProdutoId();
+                }
+                Produto produto = optProduto.get();
+
+
+                if (produto.getQuantidade() < item.getQuantidade()) { // Verificar estoque
+                    return "Estoque insuficiente para o produto: " + produto.getNome();
+                }
+
+
+                produto.setQuantidade(produto.getQuantidade() - item.getQuantidade()); // Atualizar estoque
+                produtoRepository.save(produto);
+
+
+                BigDecimal subtotal = BigDecimal.valueOf(produto.getPreco()) // Calcular subtotal
+                        .multiply(BigDecimal.valueOf(item.getQuantidade()));
+
+
+                ItemPedido itemPedido = new ItemPedido(); // Montar ItemPedido
+                itemPedido.setProduto(produto);
+                itemPedido.setQuantidade(item.getQuantidade());
+                itemPedido.setSubtotal(subtotal);
+                itemPedido.setPedido(pedido);
+
+
+                pedido.getItens().add(itemPedido); // Adicionar ao pedido
+
+
+                total = total.add(subtotal); // Incrementar total
             }
-            Produto produto = optProduto.get();
 
+            Pagamento pagamento = new Pagamento(); //Pagamento inicializado, sempre com status FALSE
 
-            // Verificar estoque
-            if (produto.getQuantidade() < item.getQuantidade()) {
-                return "Estoque insuficiente para o produto: " + produto.getNome();
-            }
+            pedido.setTotal(total); // 4) Setar total e salvar pedido
+            pedido.setPagamento(pagamento); // 5) Setar status do Pagamento no Pedido
+            pagamento.setPedido(pedido); // 6) Setar Pedido no objeto Pagamento
 
-            // Atualizar estoque
-            produto.setQuantidade(produto.getQuantidade() - item.getQuantidade());
-            produtoRepository.save(produto);
+            this.pedidoRepository.save(pedido); // Devido ao cascade, itens também serão salvos
 
-            // Calcular subtotal
-            BigDecimal subtotal = BigDecimal.valueOf(produto.getPreco())
-                    .multiply(BigDecimal.valueOf(item.getQuantidade()));
-
-            // Montar ItemPedido
-            ItemPedido itemPedido = new ItemPedido();
-            itemPedido.setProduto(produto);
-            itemPedido.setQuantidade(item.getQuantidade());
-            itemPedido.setSubtotal(subtotal);
-            itemPedido.setPedido(pedido);
-
-            // Adicionar ao pedido
-            pedido.getItens().add(itemPedido);
-
-            // Incrementar total
-            total = total.add(subtotal);
+            return "Pedido criado com sucesso! ID: " + pedido.getId() + " | Total: " + total + "\n Aguardando pagamento...";
         }
-
-        // 4) Setar total e salvar pedido
-        pedido.setTotal(total);
-        pedidoRepository.save(pedido); // Devido ao cascade, itens também serão salvos
-
-        return "Pedido criado com sucesso! ID: " + pedido.getId() + " | Total: " + total;
     }
 
     public PedidoResumoDto findById(Long id) {
         try {
-            Pedido pedido = pedidoRepository.findById(id).get();
+            Pedido pedido = this.pedidoRepository.findById(id).get();
             Long idPedido = pedido.getId();
             String nomeCliente = pedido.getCliente().getNome();
             BigDecimal subtotal = calcularSubtotalPorPedido(idPedido);
-            return new PedidoResumoDto(idPedido, nomeCliente, subtotal);
+            String pagamento = "Aguardando pagamento...";
+            if(this.pedidoRepository.getStatusPagamento(idPedido)){
+                pagamento = "Pago";
+            }
+            return new PedidoResumoDto(idPedido, nomeCliente, subtotal, pagamento);
         } catch (Exception e) {
             return null;
         }
@@ -116,8 +121,14 @@ public class PedidoService {
             for (String nomeCliente : listaClientes) {
                 List<Long> listaIdPedido = pedidoRepository.findClienteIdByNome(nomeCliente); //encontra o id do cliente
                 for (Long idPedido : listaIdPedido) {
+                    String pagamento = "";
+                    if(this.pedidoRepository.getStatusPagamento(idPedido)){
+                        pagamento = "Pago";
+                    }else{
+                        pagamento = "Aguardando pagamento...";
+                    }
                     BigDecimal subtotal = calcularSubtotalPorPedido(idPedido); //calcula o subtotal a partir do nome encontrado
-                    pedidosResumo.add(new PedidoResumoDto(idPedido, nomeCliente, subtotal));
+                    pedidosResumo.add(new PedidoResumoDto(idPedido, nomeCliente, subtotal, pagamento));
                 }
             }
             return pedidosResumo;
