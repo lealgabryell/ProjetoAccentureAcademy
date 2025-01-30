@@ -37,6 +37,9 @@ Antes de começar, certifique-se de que você tem instalado:
 - **MySQL**
 - **RabbitMQ**
 - **Swagger**
+- **Jacoco**
+- **JUnit**
+- **Thymeleaf**
 
 ### 🚀 Passos para Iniciar
 
