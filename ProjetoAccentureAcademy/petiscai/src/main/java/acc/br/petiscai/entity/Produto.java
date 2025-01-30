@@ -18,7 +18,7 @@ public class Produto {
     private String nome;
     private String tipo;
     private Double preco;
-    @Column(nullable = true)
+    @Column(nullable = false)
     private Integer quantidade;
 
 

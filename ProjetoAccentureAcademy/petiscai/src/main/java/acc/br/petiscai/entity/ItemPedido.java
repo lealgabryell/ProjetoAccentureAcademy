@@ -26,6 +26,7 @@ public class ItemPedido {
     private Produto produto;
 
     private Integer quantidade;
+
     private BigDecimal subtotal;
 
     public ItemPedido(Pedido pedido, Produto produto, Integer quantidade, BigDecimal subtotal) {
@@ -35,4 +36,3 @@ public class ItemPedido {
         this.subtotal = subtotal;
     }
 }
-

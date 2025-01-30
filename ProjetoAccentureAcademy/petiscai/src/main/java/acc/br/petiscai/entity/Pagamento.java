@@ -23,4 +23,12 @@ public class Pagamento {
     public Pagamento() {
         this.status = false;
     }
+    
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 }

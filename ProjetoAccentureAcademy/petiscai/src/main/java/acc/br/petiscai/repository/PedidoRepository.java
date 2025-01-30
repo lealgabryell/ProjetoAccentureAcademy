@@ -5,9 +5,14 @@ import acc.br.petiscai.entity.Pedido;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import acc.br.petiscai.enums.StatusPedido;
 
 import java.util.List;
+import java.util.Optional;
 
+@Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
     @Query("SELECT p.cliente.nome " +
@@ -29,7 +34,13 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     @Query("SELECT p FROM Pedido p WHERE p.cliente.id = :idCliente")
     List<Pedido> findByClienteId(Long idCliente);
 
-    @Query("SELECT p.pagamento.status FROM Pedido p WHERE p.id = :idPedido")
-    boolean getStatusPagamento(Long idPedido);
+//     @Query("SELECT p.pagamento.status FROM Pedido p WHERE p.id = :idPedido")
+//     boolean getStatusPagamento(Long idPedido);
 
+    @Query("SELECT p.pagamento.status FROM Pedido p WHERE p.id = :idPedido")
+    boolean getStatusPagamento(@Param("idPedido") Long idPedido);
+
+    Optional<Pedido> findByClienteIdAndStatus(Long clienteId, StatusPedido status);
+
+    Optional<Pedido> findByClienteEmailAndStatus(String email, StatusPedido status);
 }

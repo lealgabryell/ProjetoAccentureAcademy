@@ -91,20 +91,3 @@ public class ProdutoController {
 
 
 
-//     @Operation(summary = "Encontra todos os produtos")
-//     @GetMapping
-//     public String listarProdutos(Model model) {
-//         List<Produto> produtos = produtoService.findAll();
-//         model.addAttribute("produtos", produtos);
-//         return "produtos";
-//     }
-//     public ResponseEntity<List<Produto>> findAll() {
-//         List<Produto> produtos = produtoService.findAll();
-//         if (produtos == null || produtos.isEmpty()) {
-//             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//         } else {
-//             return new ResponseEntity<>(produtos, HttpStatus.OK);
-//         }
-//     }
-
-

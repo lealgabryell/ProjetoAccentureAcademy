@@ -24,6 +24,20 @@
             margin: 5px;
             padding: 5px 10px;
         }
+
+        .btn-add-to-order {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-add-to-order:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 
@@ -53,12 +67,14 @@
 
     <h2>Produtos Disponíveis</h2>
     <div class="produto-grid">
+        <!-- Iteração sobre os produtos -->
         <div th:each="produto : ${produtos}" class="produto-card">
             <h3 th:text="${produto.nome}"></h3>
             <p th:text="'Tipo: ' + ${produto.tipo}"></p>
             <p th:text="'Preço: R$ ' + ${#numbers.formatDecimal(produto.preco, 1, 2)}"></p>
             <p th:text="'Quantidade: ' + ${produto.quantidade}"></p>
 
+            <!-- Seção para administradores (editar e excluir) -->
             <div sec:authorize="hasRole('ADMIN')">
                 <a th:href="@{/produtos/edit/{id}(id=${produto.id})}" class="btn-edit">
                     <button type="button">Editar</button>
@@ -68,8 +84,54 @@
                     <button type="submit" class="btn-delete">Excluir</button>
                 </form>
             </div>
+
+            <!-- Seção para clientes (adicionar ao pedido) -->
+            <div sec:authorize="hasRole('USER')">
+                <form th:action="@{/api/pedido/adicionar-produto}" method="post" onsubmit="return adicionarProduto(event)">
+                    <input type="hidden" name="produtoId" th:value="${produto.id}" />
+                    <label for="quantidade">Quantidade:</label>
+                    <input type="number" id="quantidade" name="quantidade" min="1" max="${produto.quantidade}" required />
+                    <button type="submit" class="btn-add-to-order">Adicionar ao Pedido</button>
+                </form>
+            </div>
         </div>
     </div>
+                    <button class="btn-view-order" onclick="redirecionarParaPedido()">Visualizar Meu Pedido</button>
+
+    <script>
+        // Função para exibir popup e evitar recarregar a página
+        function adicionarProduto(event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+            alert("Produto adicionado ao pedido com sucesso!");
+
+            // Opcionalmente, envie o formulário via AJAX (se necessário)
+            const form = event.target; // Obtém o formulário atual
+            fetch(form.action, {
+                method: form.method,
+                body: new FormData(form),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            }).then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
+                if (response.ok) {
+                    window.location.reload();
+                    console.log("Produto adicionado com sucesso!");
+                } else {
+                    console.error("Erro ao adicionar produto.");
+                }
+            });
+
+            return false; // Impede o envio padrão do formulário
+        }
+
+        // Função para redirecionar à página do pedido
+        function redirecionarParaPedido() {
+            window.location.href = "/api/pedido"; 
+        }
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Meu Pedido</title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <div th:if="${param.status == 'pago'}">
+        <p style="color: green;">Seu pedido foi pago com sucesso!</p>
+    </div>
+    
+    <div th:if="${param.status == 'cancelado'}">
+        <p style="color: red;">Seu pedido foi cancelado.</p>
+    </div>
+
+    <h2>Meu Pedido</h2>
+
+    <!-- Verifica se há um pedido -->
+    <div th:if="${pedido != null}">
+        <p><strong>ID do Pedido:</strong> <span th:text="${pedido.id}"></span></p>
+        <p><strong>Total:</strong> R$<span th:text="${#numbers.formatDecimal(pedido.total, 1, 2)}"></span></p>
+
+        <!-- Lista os itens do pedido -->
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${pedido.itens}">
+                    <td th:text="${item.produto.nome}"></td>
+                    <td th:text="${item.quantidade}"></td>
+                    <td>R$<span th:text="${#numbers.formatDecimal(item.subtotal, 1, 2)}"></span></td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Botões -->
+        <form th:action="@{/api/pedido/pagar}" method="post" style="display:inline;">
+            <button type="submit">Pagar Pedido</button>
+        </form>
+        
+        <form th:action="@{/api/pedido/cancelar}" method="post" style="display:inline;">
+            <button type="submit">Cancelar Pedido</button>
+        </form>
+    </div>
+
+    <!-- Mensagem caso não haja pedido -->
+    <div th:if="${pedido == null}">
+        <p>Nenhum pedido encontrado.</p>
+    </div>
+</body>
+
+</html>
