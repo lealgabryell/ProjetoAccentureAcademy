@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>Produtos</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .produto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .produto-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .btn-edit,
+        .btn-delete {
+            margin: 5px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div sec:authorize="hasRole('ADMIN')" class="admin-section">
+        <h2>Cadastrar Novo Produto</h2>
+        <form th:action="@{/produtos/save}" method="post">
+            <div>
+                <label>Nome:</label>
+                <input type="text" name="nome" required />
+            </div>
+            <div>
+                <label>Tipo:</label>
+                <input type="text" name="tipo" required />
+            </div>
+            <div>
+                <label>Preço:</label>
+                <input type="number" step="0.01" name="preco" required />
+            </div>
+            <div>
+                <label>Quantidade:</label>
+                <input type="number" name="quantidade" required />
+            </div>
+            <button type="submit">Cadastrar Produto</button>
+        </form>
+    </div>
+
+    <h2>Produtos Disponíveis</h2>
+    <div class="produto-grid">
+        <div th:each="produto : ${produtos}" class="produto-card">
+            <h3 th:text="${produto.nome}"></h3>
+            <p th:text="'Tipo: ' + ${produto.tipo}"></p>
+            <p th:text="'Preço: R$ ' + ${#numbers.formatDecimal(produto.preco, 1, 2)}"></p>
+            <p th:text="'Quantidade: ' + ${produto.quantidade}"></p>
+
+            <div sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/produtos/edit/{id}(id=${produto.id})}" class="btn-edit">
+                    <button type="button">Editar</button>
+                </a>
+
+                <form th:action="@{/produtos/delete/{id}(id=${produto.id})}" method="post" style="display: inline;">
+                    <button type="submit" class="btn-delete">Excluir</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

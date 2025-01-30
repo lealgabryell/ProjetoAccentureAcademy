@@ -21,35 +21,13 @@ public class ClienteController {
     @Operation(summary = "Cria um novo cliente")
     @PostMapping("/save")
     public ResponseEntity<String> save(@RequestBody ClienteDto clienteDto) {
-        String c = this.clienteService.save(clienteDto);
-
-        if (c.contains("Cliente salvo com sucesso!")) {
-            return new ResponseEntity<>(c, HttpStatus.CREATED);
-        } else if (c.contains("Cliente menor de idade!")) {
-            return new ResponseEntity<>(c, HttpStatus.NOT_ACCEPTABLE);
-        } else if (c.contains("CPF já cadastrado no sistema!")) {
-            return new ResponseEntity<>(c, HttpStatus.CONFLICT);
-        } else if (c.contains("Email já cadastrado")) {
-            return new ResponseEntity<>(c, HttpStatus.CONFLICT);
-        } else {
-            return new ResponseEntity<>(c, HttpStatus.BAD_REQUEST);
-        }
+        return this.clienteService.save(clienteDto);
     }
 
     @Operation(summary = "Altera informacoes de um cliente")
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> update(@RequestBody ClienteDto clienteDto, @PathVariable Integer id) {
-        String c = this.clienteService.update(clienteDto, id);
-
-        if (c.contains("Cliente" + id + " alterado com sucesso!")) {
-            return new ResponseEntity<>(c, HttpStatus.CREATED);
-        } else if (c.contains("Cliente não encontrado")) {
-            return new ResponseEntity<>(c, HttpStatus.NOT_FOUND);
-        } else if (c.contains("Cliente menor de idade!")) {
-            return new ResponseEntity<>(c, HttpStatus.NOT_ACCEPTABLE);
-        } else {
-            return new ResponseEntity<>(c, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> update(@RequestBody ClienteDto clienteDto, @PathVariable Long id) {
+        return this.clienteService.update(clienteDto, id);
     }
 
     @Operation(summary = "Exclui um cliente")

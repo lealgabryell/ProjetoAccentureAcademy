@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ClienteRepository  extends JpaRepository<Cliente, Long> {
@@ -16,4 +17,6 @@ public interface ClienteRepository  extends JpaRepository<Cliente, Long> {
     public boolean existsByCpf(String cpf);
     // Verificar se existe um cliente com o email informado
     public boolean existsByEmail(String email);
+    
+    Optional<Cliente> findByEmail(String email);
 }

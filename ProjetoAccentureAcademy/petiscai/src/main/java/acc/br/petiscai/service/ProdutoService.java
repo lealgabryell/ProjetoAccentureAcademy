@@ -16,6 +16,11 @@ public class ProdutoService {
 
     public String save(ProdutoDto produtoDto) {
         try {
+            // Verifica se já existe produto com mesmo nome e tipo
+            if (produtoRepository.existsByNomeAndTipo(produtoDto.getNome(), produtoDto.getTipo())) {
+                return "Produto já cadastrado!";
+            }
+
             Produto produto = new Produto(produtoDto);
             produtoRepository.save(produto);
             return "Produto salvo com sucesso!";

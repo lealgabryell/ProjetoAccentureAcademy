@@ -1,0 +1,76 @@
+/* Estilo geral */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+/* Cabeçalho */
+h1,
+h2,
+h3 {
+    color: #444;
+    text-align: center;
+}
+
+/* Formulários */
+form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Campos de entrada */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Botões */
+/* Estilo base para ambos os botões */
+.btn {
+    padding: 8px 15px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin: 5px;
+}
+
+/* Estilo específico para edição */
+.btn-edit {
+    background-color: #4CAF50;
+    /* Verde */
+    color: white;
+}
+
+/* Estilo específico para exclusão */
+.btn-delete {
+    background-color: #f44336;
+    /* Vermelho */
+    color: white;
+}
+
+/* Efeito hover */
+.btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Container para os botões */
+.btn-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}

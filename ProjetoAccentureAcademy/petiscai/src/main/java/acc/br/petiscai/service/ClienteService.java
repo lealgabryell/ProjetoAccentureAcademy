@@ -3,37 +3,54 @@ package acc.br.petiscai.service;
 import acc.br.petiscai.dto.ClienteDto;
 import acc.br.petiscai.entity.Cliente;
 import acc.br.petiscai.repository.ClienteRepository;
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
 
     @Autowired
     ClienteRepository clienteRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;    
 
-    public String save(ClienteDto clienteDto) {
+    @Transactional
+    public ResponseEntity<String> save(ClienteDto clienteDto) {
         if (!checaIdade(clienteDto)) {
-            return "Cliente menor de idade!";
-        } else if (this.clienteExistsByEmail(clienteDto)) {
-            return "Email ja cadastrado no sistema!";
-        } else if (this.clienteExistsByCpf(clienteDto)) {
-            return "CPF ja cadastrado no sistema!";
-        } else {
-            try {
-                Cliente cliente = new Cliente(clienteDto);
-                this.clienteRepository.save(cliente);
-                return "Cliente salvo com sucesso!";
-            } catch (Exception e) {
-                return e.getMessage();
-            }
+            return new ResponseEntity<>("Cliente menor de idade!", HttpStatus.NOT_ACCEPTABLE);
         }
+
+        if (clienteExistsByCpf(clienteDto)) {
+            return new ResponseEntity<>("CPF já cadastrado no sistema!", HttpStatus.CONFLICT);
+        }
+
+        if (clienteExistsByEmail(clienteDto)) {
+            return new ResponseEntity<>("Email já cadastrado", HttpStatus.CONFLICT);
+        }
+
+        try {
+            Cliente cliente = new Cliente(clienteDto);
+            this.clienteRepository.save(cliente);
+            cliente.setPassword(passwordEncoder.encode(clienteDto.getPassword()));
+            clienteRepository.save(cliente);
+            return new ResponseEntity<>("Cliente salvo com sucesso!", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    
     }
 
+    public Optional<Cliente> findByEmail(String email) {
+        return clienteRepository.findByEmail(email);
+    }
     private boolean clienteExistsByEmail(ClienteDto clienteDto) {
         return clienteRepository.existsByEmail(clienteDto.getEmail());
     }
@@ -84,24 +101,30 @@ public class ClienteService {
         return this.clienteRepository.findById(id).isPresent();
     }
 
-    public String update(ClienteDto clienteDto, long id) {
-        if (this.findByIdBool(id)) {
-            try {
-                Cliente cliente = new Cliente(id, clienteDto.getCpf(), clienteDto.getNome(), clienteDto.getEmail(),
-                        clienteDto.getTelefone(), clienteDto.getEndereco(), clienteDto.getIdade());
+    @Transactional
+    public ResponseEntity<String> update(ClienteDto clienteDto, Long id) {
+        if (!findByIdBool(id)) {
+            return new ResponseEntity<>("Cliente não encontrado", HttpStatus.NOT_FOUND);
+        }
 
-                if (this.checaIdade(clienteDto)) {
-                    this.clienteRepository.save(cliente);
-                } else {
-                    return "Cliente menor de idade!";
-                }
-
-                return "Cliente " + cliente.getId() + " alterado com sucesso!";
-            } catch (Exception e) {
-                return e.getMessage();
+        try {
+            if (!checaIdade(clienteDto)) {
+                return new ResponseEntity<>("Cliente menor de idade!", HttpStatus.NOT_ACCEPTABLE);
             }
-        } else {
-            return "Cliente nao encontrado";
+
+            Cliente cliente = clienteRepository.findById(id).get();
+            cliente.setCpf(clienteDto.getCpf());
+            cliente.setNome(clienteDto.getNome());
+            cliente.setEmail(clienteDto.getEmail());
+            cliente.setTelefone(clienteDto.getTelefone());
+            cliente.setEndereco(clienteDto.getEndereco());
+            cliente.setIdade(clienteDto.getIdade());
+            cliente.setPassword(passwordEncoder.encode(clienteDto.getPassword()));
+
+            clienteRepository.save(cliente);
+            return new ResponseEntity<>("Cliente alterado com sucesso!", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
