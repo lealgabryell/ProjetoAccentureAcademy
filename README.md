@@ -63,6 +63,21 @@ git clone https://github.com/lealgabryell/ProjetoAccentureAcademy.git
    http://localhost:8000/swagger-ui/index.html#/
     ```
 
+
+## 🧩 Diagrama de Lógica da API
+
+A seguir, um diagrama simplificado que ilustra a lógica de funcionamento da **API Petiscai**. Este diagrama ajuda a entender como os diferentes componentes interagem para processar as requisições e gerenciar os dados.
+
+```mermaid
+graph TD
+    Cliente[Cliente] -->|Faz Requisição HTTP| Controller[Controller]
+    Controller -->|Chama Serviço| Service[Service]
+    Service -->|Acessa Repositório| Repository[Repository]
+    Repository -->|Interage com Banco de Dados| Database[(MySQL)]
+    Service -->|Envia Mensagem| RabbitMQ[(RabbitMQ)]
+    Controller -->|Retorna Resposta HTTP| Cliente
+```
+
 ---
 
 ## 🧑‍💻 Desenvolvedores
