@@ -58,6 +58,7 @@
             <p th:text="'Tipo: ' + ${produto.tipo}"></p>
             <p th:text="'Preço: R$ ' + ${#numbers.formatDecimal(produto.preco, 1, 2)}"></p>
             <p th:text="'Quantidade: ' + ${produto.quantidade}"></p>
+            <p th:text="'id: ' + ${produto.id}"></p>
 
             <div sec:authorize="hasRole('ADMIN')">
                 <a th:href="@{/produtos/edit/{id}(id=${produto.id})}" class="btn-edit">

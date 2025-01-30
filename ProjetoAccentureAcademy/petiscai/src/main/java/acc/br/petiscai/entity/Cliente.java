@@ -38,16 +38,7 @@ public class Cliente {
     @Column(nullable = false)
     private boolean admin = false;
 
-    public Cliente(String cpf, String nome, String email, String telefone, String endereco, int idade,
-            String password) {
-        this.cpf = cpf;
-        this.nome = nome;
-        this.email = email;
-        this.telefone = telefone;
-        this.endereco = endereco;
-        this.idade = idade;
-        this.password = password;
-    }
+
 
     public Cliente(ClienteDto clienteDto) {
         this.cpf = clienteDto.getCpf();
@@ -59,16 +50,7 @@ public class Cliente {
         this.password = clienteDto.getPassword();
     }
 
-    public Cliente(Long id, ClienteDto clienteDto) {
-        this.id = id;
-        this.cpf = clienteDto.getCpf();
-        this.nome = clienteDto.getNome();
-        this.email = clienteDto.getEmail();
-        this.telefone = clienteDto.getTelefone();
-        this.endereco = clienteDto.getEndereco();
-        this.idade = clienteDto.getIdade();
-        this.password = clienteDto.getPassword();
-    }
+
 
     public void setPassword(String password) {
         // Garante que a senha será sempre criptografada
@@ -79,12 +61,5 @@ public class Cliente {
         }
     }
 
-    public boolean isAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
-    }
 
 }

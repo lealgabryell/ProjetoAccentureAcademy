@@ -20,15 +20,10 @@ public class EstoqueController {
     @Autowired
     private EstoqueService estoqueService;
 
-    /**
-     * Atualiza estoque de saída para uma lista de IDs de produtos.
-     * Exemplo de chamada: PUT /api/estoque/saida
-     * Corpo (JSON): [1, 2, 3]
-     */
+
     @PutMapping("/saida")
-    public ResponseEntity<String> saida(@RequestBody List<Long> ids) {
+    public ResponseEntity<String> saida(@RequestBody Long id) {
         String resposta = "";
-        for (Long id : ids) {
             Produto produto = produtoService.findById(id);
             if (produto == null) {
                 resposta = "Produto com ID " + id + " não encontrado!";
@@ -36,7 +31,7 @@ public class EstoqueController {
             }
             resposta = estoqueService.saida(produto);
             // Se quiser tratar cada produto individualmente, pode acumular as respostas.
-        }
+
         // Verifica a última mensagem retornada pelo service
         if (resposta.contains("Estoque atualizado devido a venda realizada.") 
          || resposta.contains("Devido ao estoque zerado, o produto saiu do nosso banco de dados!")) {
@@ -45,11 +40,6 @@ public class EstoqueController {
         return new ResponseEntity<>(resposta, HttpStatus.BAD_REQUEST);
     }
 
-    /**
-     * Atualiza estoque de entrada para uma lista de IDs de produtos.
-     * Exemplo de chamada: PUT /api/estoque/entrada
-     * Corpo (JSON): [1, 2, 3]
-     */
     @PutMapping("/entrada")
     public ResponseEntity<String> entrada(@RequestBody List<Long> ids) {
         String resposta = "";
@@ -68,13 +58,5 @@ public class EstoqueController {
         }
     }
 
-    @GetMapping("/findAll")
-    public ResponseEntity<List<Produto>> findAll() {
-        List<Produto> lista = estoqueService.findAll();
-        if (lista == null || lista.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(lista, HttpStatus.OK);
-        }
-    }
+
 }

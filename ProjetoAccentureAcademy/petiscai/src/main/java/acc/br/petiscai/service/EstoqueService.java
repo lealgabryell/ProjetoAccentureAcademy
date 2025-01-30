@@ -34,11 +34,4 @@ public class EstoqueService {
             return e.getMessage();
         }
     }
-    public List<Produto> findAll(){
-        try{
-            return this.estoqueRepository.findProdutosDisponiveis();
-        }catch(Exception e){
-            return null;
-        }
-    }
 }

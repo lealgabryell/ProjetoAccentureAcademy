@@ -24,7 +24,7 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @Operation(summary = "Encontra todos os produtos")
-    @GetMapping
+    @GetMapping("/findAll")
     public String listarProdutos(Model model) {
         List<Produto> produtos = produtoService.findAll();
         model.addAttribute("produtos", produtos);

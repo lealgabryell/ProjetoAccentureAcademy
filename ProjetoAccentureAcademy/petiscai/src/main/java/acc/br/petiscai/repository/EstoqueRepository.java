@@ -11,8 +11,4 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface EstoqueRepository extends JpaRepository<Estoque, Long> {
-
-    @Query("SELECT e.produto FROM Estoque e WHERE e.disponivel = true")
-    List<Produto> findProdutosDisponiveis();
-
 }
