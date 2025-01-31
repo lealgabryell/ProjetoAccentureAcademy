@@ -74,3 +74,8 @@ textarea {
     gap: 10px;
     margin-top: 10px;
 }
+
+a{
+    display: flex;
+    justify-content: center;
+}
